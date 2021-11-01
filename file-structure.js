@@ -35,8 +35,8 @@ class File {
     const size = file.getSize()
     const created = file.getDateCreated()
     const lastUpdated = file.getLastUpdated()
-    const URL = file.getUrl()
-    this.options = { name, path, owner, mimeType, size, created, lastUpdated, URL, id }
+    const Url = file.getUrl()
+    this.options = { name, path, owner, mimeType, size, created, lastUpdated, Url, id }
     return this
   }
 }

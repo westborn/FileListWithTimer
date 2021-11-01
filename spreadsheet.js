@@ -14,22 +14,16 @@ class Spreadsheet {
           file.size,
           file.created,
           file.lastUpdated,
-          file.URL,
-          name,
-          id,
+          file.Url,
         ])
         ar.push(...fileData)
         return ar
       },
-      [['Name', 'Path', 'Owner', 'Type', 'Size', 'Created', 'Last Updated', 'URL']]
+      [['Name', 'Path', 'Owner', 'Type', 'Size', 'Created', 'Last Updated', 'Url']]
     )
     const ss = SpreadsheetApp.create('Folder Scanner')
     ss.getSheets()[0].getRange(1, 1, data.length, data[0].length).setValues(data)
     SpreadsheetApp.flush()
     return ss.getUrl()
   }
-}
-
-const testSS = () => {
-  Spreadsheet.create(readFile())
 }
