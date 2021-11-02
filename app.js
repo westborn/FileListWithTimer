@@ -17,7 +17,8 @@ const scan = (folderId) => {
       fs.addFolder(newFolder)
       newFolder.subfolders.forEach((subFolder) => scan(subFolder))
     } catch (err) {
-      console.log('ERROR', err)
+      console.log(err.stack)
+      throw new Error('Finished!')
     }
   } else {
     fs.tree[folderId].subfolders.forEach((subfolder) => scan(subfolder))
@@ -28,8 +29,11 @@ const saveFile = () => {
   const fileName = 'folder-scanner.json'
   const files = DriveApp.getFilesByName(fileName)
   let file
-  if (files.hasNext()) file = files.next()
-  else file = DriveApp.createFile(fileName, '')
+  if (files.hasNext()) {
+    file = files.next()
+  } else {
+    file = DriveApp.createFile(fileName, '')
+  }
   file.setContent(JSON.stringify(new FileStructure()))
 }
 
@@ -47,9 +51,9 @@ const deleteFile = () => {
 }
 
 const cleanUp = (e) => {
-  deleteFile()
   Trigger.deleteTrigger(e)
   const url = Spreadsheet.create(new FileStructure())
+  saveFile()
   console.log('spreadsheet created:', url)
 }
 
@@ -73,14 +77,17 @@ const pickUpScan = (e) => {
 
 const main = () => {
   ScanStatus.set('running')
-  scan('1s-CwZRo4XL-IP9M422cfdou773iNIPnw') // Operations/Archive
+  // scan('1s-CwZRo4XL-IP9M422cfdou773iNIPnw') // Operations/Archive
+  // scan('1cZhH1yv02rIYLJXhnKqXBGflfoQj8v-U') // Communications
+  scan('0AIn2yl1xiB-OUk9PVA') // The Platform
+
   const fs = new FileStructure()
 
   ScanStatus.set('not running')
   if (true === fs.scanUnfinished) {
     console.log('did not finish')
     saveFile()
-    return new Trigger('pickUpScan', 1)
+    return new Trigger('pickUpScan', 10)
   }
   cleanUp()
 }

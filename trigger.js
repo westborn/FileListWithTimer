@@ -7,7 +7,7 @@ const Trigger = (function () {
     }
 
     static deleteTrigger(e) {
-      if (!e) return console.log('No triggers to delete...continuing')
+      if (e === undefined) return console.log('No triggers to delete...continuing')
       if (typeof e !== 'object') return console.log(`${e} is not an event object...continuing`)
       if (!e.triggerUid) return console.log(`${JSON.stringify(e)} doesn't have a triggerUid...continuing`)
       ScriptApp.getProjectTriggers().forEach((trigger) => {

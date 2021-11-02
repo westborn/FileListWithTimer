@@ -7,8 +7,17 @@ class Folder {
     const folder = DriveApp.getFolderById(id)
     const subfolders = []
     const files = []
-    const parent = isRoot ? null : folder.getParents().next().getId()
+
+    let parent = null
+    try {
+      parent = isRoot ? null : folder.getParents().next().getId()
+    } catch {
+      parent = null
+    }
+
     const name = folder.getName()
+    console.log(`Folder: ${name}`)
+
     const _subfolders = folder.getFolders()
     const _files = folder.getFiles()
 
@@ -35,8 +44,7 @@ class File {
     const size = file.getSize()
     const created = file.getDateCreated()
     const lastUpdated = file.getLastUpdated()
-    const Url = file.getUrl()
-    this.options = { name, path, owner, mimeType, size, created, lastUpdated, Url, id }
+    this.options = { name, path, owner, mimeType, size, created, lastUpdated, id }
     return this
   }
 }
@@ -52,15 +60,17 @@ class FileStructure {
 
     this.timer = new Timer()
     this.timer.start()
-    // this.threshold = 5 * 60 * 1000;
-    this.threshold = 2 * 60 * 1000
+    this.threshold = 5 * 60 * 1000 // 5 minutes
+    // this.threshold = 2 * 60 * 1000  // 2 minutes
 
     FileStructure.instance = this
     return FileStructure.instance
   }
 
   addFolder(folderObj) {
-    if (this.tree && this.tree.root && this.tree.root.id === folderObj.id) return
+    if (this.tree && this.tree.root && this.tree.root.id === folderObj.id) {
+      return
+    }
     this.tree[folderObj.id] = folderObj
     return this
   }

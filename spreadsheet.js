@@ -14,12 +14,12 @@ class Spreadsheet {
           file.size,
           file.created,
           file.lastUpdated,
-          file.Url,
+          id,
         ])
         ar.push(...fileData)
         return ar
       },
-      [['Name', 'Path', 'Owner', 'Type', 'Size', 'Created', 'Last Updated', 'Url']]
+      [['Name', 'Path', 'Owner', 'Type', 'Size', 'Created', 'Last Updated', 'Id']]
     )
     const ss = SpreadsheetApp.create('Folder Scanner')
     ss.getSheets()[0].getRange(1, 1, data.length, data[0].length).setValues(data)
