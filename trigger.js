@@ -1,5 +1,3 @@
-// jshint esversion: 9
-// jshint laxbreak: true
 const Trigger = (function () {
   class Trigger {
     constructor(functionName, everyMinutes) {

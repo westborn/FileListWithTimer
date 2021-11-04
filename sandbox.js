@@ -1,5 +1,3 @@
-// jshint esversion: 9
-// jshint laxbreak: true
 const scan = (folderId) => {
   if (undefined === fs.tree[folderId]) {
     try {

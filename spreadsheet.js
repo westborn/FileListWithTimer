@@ -1,5 +1,3 @@
-// jshint esversion: 9
-// jshint laxbreak: true
 class Spreadsheet {
   static create(fs) {
     const { tree } = fs

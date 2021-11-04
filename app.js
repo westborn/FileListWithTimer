@@ -1,6 +1,3 @@
-// jshint esversion: 9
-// jshint laxbreak: true
-
 const scan = (folderId) => {
   const fs = new FileStructure(folderId)
   if (fs.threshold <= fs.timer.getDuration()) {
@@ -25,6 +22,19 @@ const scan = (folderId) => {
   }
 }
 
+function getPath(fileObj) {
+  let folders = []
+  let parent = fileObj.getParents()
+  while (parent.hasNext()) {
+    parent = parent.next()
+    folders.push(parent.getName())
+    parent = parent.getParents()
+  }
+  if (folders.length) {
+    return folders.reverse().join('/')
+  }
+}
+
 const saveFile = () => {
   const fileName = 'folder-scanner.json'
   const files = DriveApp.getFilesByName(fileName)
@@ -37,8 +47,7 @@ const saveFile = () => {
   file.setContent(JSON.stringify(new FileStructure()))
 }
 
-const readFile = () => {
-  const fileName = 'folder-scanner.json'
+const readFile = (fileName = 'folder-scanner.json') => {
   const files = DriveApp.getFilesByName(fileName)
   if (files.hasNext()) return JSON.parse(files.next().getBlob().getDataAsString())
   return null
@@ -77,9 +86,11 @@ const pickUpScan = (e) => {
 
 const main = () => {
   ScanStatus.set('running')
+  deleteFile()
+
   // scan('1s-CwZRo4XL-IP9M422cfdou773iNIPnw') // Operations/Archive
-  // scan('1cZhH1yv02rIYLJXhnKqXBGflfoQj8v-U') // Communications
-  scan('0AIn2yl1xiB-OUk9PVA') // The Platform
+  scan('1cZhH1yv02rIYLJXhnKqXBGflfoQj8v-U') // Communications
+  // scan('0AIn2yl1xiB-OUk9PVA') // The Platform
 
   const fs = new FileStructure()
 

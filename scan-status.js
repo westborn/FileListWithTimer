@@ -1,5 +1,3 @@
-// jshint esversion: 9
-// jshint laxbreak: true
 class ScanStatus {
   static set(status) {
     PropertiesService.getScriptProperties().setProperty('status', status)

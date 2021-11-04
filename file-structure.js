@@ -1,5 +1,3 @@
-// jshint esversion: 9
-// jshint laxbreak: true
 class Folder {
   constructor(options) {
     let { id, isRoot = false } = options
@@ -38,7 +36,8 @@ class File {
   constructor(id) {
     const file = DriveApp.getFileById(id)
     const name = file.getName()
-    const path = file.getParents().next().getName()
+    // const path = file.getParents().next().getName()
+    const path = getPath(file)
     const owner = file.getOwner() ? file.getOwner().getEmail() : 'No Owner'
     const mimeType = file.getMimeType()
     const size = file.getSize()
